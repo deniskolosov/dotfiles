@@ -36,6 +36,14 @@ alias ls="eza --icons=always"
 alias cd="z"
 alias lg="lazygit"
 
+
+function fdvi() {
+  local dir="${1:-$HOME}"
+  fd . "$dir" --type f --extension txt --extension md --extension py --extension go --extension ts --extension js --follow --hidden --exclude .git \
+    | fzf --preview "bat --style=numbers --color=always --line-range=:500 {}" \
+    --bind "enter:execute(nvim {})"
+  }
+
 export EDITOR="vi"
 
  
