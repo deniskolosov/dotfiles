@@ -59,7 +59,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 vim.keymap.set('n', '<leader>pt', ':lua open_todo_file()<CR>', { silent = true })
-vim.keymap.set('n', '<C-l>', ':lua toggle_checkbox()<CR>', {  silent = true })
+vim.keymap.set('n', '<leader>pl', ':lua toggle_checkbox()<CR>', {  silent = true })
 --
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
