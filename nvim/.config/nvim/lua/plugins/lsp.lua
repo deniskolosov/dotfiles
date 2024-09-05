@@ -39,6 +39,7 @@ return {
 			ensure_installed = {
 				"lua_ls",
 				"pylsp",
+				"markdown-oxide",
 			}
 		end,
 	},
@@ -223,6 +224,11 @@ return {
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			lspconfig.lua_ls.setup({
+				on_attach = setup_lsp_keybindings,
+				capabilities = capabilities,
+			})
+
+			lspconfig.markdown_oxide.setup({
 				on_attach = setup_lsp_keybindings,
 				capabilities = capabilities,
 			})
