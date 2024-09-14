@@ -46,6 +46,12 @@ return  {
           --               -- the current file is changed while the tree is open.
           -- leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
         },
+        window = {
+            mappings = {
+                ["<cr>"] = "open",        -- Enter key to open items
+                ["l"] = "open",           -- Use 'l' as a key to open files or directories
+            },
+        },
       }
       -- other configurations can be added here as needed
     })
