@@ -46,6 +46,8 @@ return {
       { "<leader>ts", "<cmd>lua require('neotest').summary.toggle()<cr>", desc = "Toggle Summary" },
       { "<leader>to", "<cmd>lua require('neotest').output_panel.toggle()<cr>", desc = "Toggle Test Output" },
       { "<leader>td", "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>", desc = "Debug Nearest Test" },
+      { "<leader>tl", "<cmd>lua require('neotest').run.run_last()<cr>", desc = "Run last" },
+      { "<leader>tD", "<cmd>lua require('neotest').run.run_last({ strategy = 'dap' })<cr>", desc = "Run last with debug" },
     })
   end
 }
