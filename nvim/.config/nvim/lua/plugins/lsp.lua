@@ -21,10 +21,10 @@ return {
 				local args = {
 					"install",
 					"pylsp-rope",
-					"python-lsp-black",
-					"pyflakes",
+					-- "python-lsp-black",
+					-- "pyflakes",
 					"python-lsp-ruff",
-					"pyls-flake8",
+					-- "pyls-flake8",
 					"sqlalchemy-stubs",
 				}
 
@@ -39,6 +39,7 @@ return {
 			ensure_installed = {
 				"lua_ls",
 				"pylsp",
+				"gopls",
 				"markdown-oxide",
 			}
 		end,
@@ -222,10 +223,19 @@ return {
 			end
 
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local util = require("lspconfig.util")
 
 			lspconfig.lua_ls.setup({
 				on_attach = setup_lsp_keybindings,
 				capabilities = capabilities,
+			})
+
+			lspconfig.gopls.setup({
+				on_attach = setup_lsp_keybindings,
+				capabilities = capabilities,
+				cmd = { "gopls" },
+				filetypes = { "go", "gomod", "gowork", "gotmpl" },
+				root_dir = util.root_pattern("go.mod", ".git"),
 			})
 
 			lspconfig.markdown_oxide.setup({
@@ -236,6 +246,7 @@ return {
 			lspconfig.pylsp.setup({
 				on_attach = setup_lsp_keybindings,
 				capabilities = capabilities,
+				root_dir = util.root_pattern("pyproject.toml", "setup.py", "setup.cfg", "requirements.txt"),
 				settings = {
 					pylsp = {
 						plugins = {
