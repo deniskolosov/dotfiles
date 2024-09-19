@@ -1,4 +1,5 @@
 return {
+  {
   "mfussenegger/nvim-dap",
   dependencies = {
     "rcarriga/nvim-dap-ui",
@@ -45,4 +46,15 @@ return {
 -- nnoremap <silent> <leader>df :lua require('dap-python').test_class()<CR>
 -- vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<CR>
   end
+  },
+  {
+    "leoluz/nvim-dap-go",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+    },
+    config = function ()
+      local ft = "go"
+      require("dap-go").setup()
+    end
+}
 }
