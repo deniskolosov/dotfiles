@@ -47,6 +47,7 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
+      -- vim.lsp.set_log_level("debug")
 			local lspconfig = require("lspconfig")
 			local wk = require("which-key")
 			local builtin = require("telescope.builtin")
@@ -252,13 +253,14 @@ return {
 						plugins = {
 							ruff = {
 								-- formatter + Linter + isort
-								enabled = false,
+								enabled = true,
+                lineLength = 120,
 								extendSelect = { "I" },
 							},
 							-- formatter options
 							black = { enabled = false },
 							autopep8 = { enabled = false },
-							yapf = { enabled = true },
+							yapf = { enabled = false },
 							-- linter options
 							pylint = { enabled = false, executable = "pylint" },
 							pyflakes = { enabled = false },
@@ -268,7 +270,7 @@ return {
 							},
 							-- type checker
 							pylsp_mypy = { enabled = true },
-							mypy = { enabled = true },
+							mypy = { enabled = false },
 							-- auto-completion options
 							jedi_completion = { fuzzy = true },
 							-- import sorting
