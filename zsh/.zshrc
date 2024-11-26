@@ -53,3 +53,9 @@ alias src_env="set -a; source .env; set +a"
 
 fpath+=~/.zfunc
 autoload -Uz compinit && compinit
+
+# alias for poetry run
+function pr() {
+   poetry run "$@"
+}
+
