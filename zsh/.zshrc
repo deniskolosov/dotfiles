@@ -49,3 +49,7 @@ export EDITOR="vi"
  
 
 alias src_env="set -a; source .env; set +a"
+
+
+fpath+=~/.zfunc
+autoload -Uz compinit && compinit
