@@ -9,37 +9,38 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup()
-			local pylsp = require("mason-registry").get_package("python-lsp-server")
-			pylsp:on("install:success", function()
-				local function mason_package_path(package)
-					local path = vim.fn.resolve(vim.fn.stdpath("data") .. "/mason/packages/" .. package)
-					return path
-				end
-
-				local path = mason_package_path("python-lsp-server")
-				local command = path .. "/venv/bin/pip"
-				local args = {
-					"install",
-					"pylsp-rope",
-					-- "python-lsp-black",
-					-- "pyflakes",
-					"python-lsp-ruff",
-					-- "pyls-flake8",
-					"sqlalchemy-stubs",
-				}
-
-				require("plenary.job")
-					:new({
-						command = command,
-						args = args,
-						cwd = path,
-					})
-					:start()
-			end)
+			-- local pylsp = require("mason-registry").get_package("python-lsp-server")
+			-- pylsp:on("install:success", function()
+			-- 	local function mason_package_path(package)
+			-- 		local path = vim.fn.resolve(vim.fn.stdpath("data") .. "/mason/packages/" .. package)
+			-- 		return path
+			-- 	end
+			--
+			-- 	local path = mason_package_path("python-lsp-server")
+			-- 	local command = path .. "/venv/bin/pip"
+			-- 	local args = {
+			-- 		"install",
+			-- 		"pylsp-rope",
+			-- 		-- "python-lsp-black",
+			-- 		-- "pyflakes",
+			-- 		"python-lsp-ruff",
+			-- 		-- "pyls-flake8",
+			-- 		"sqlalchemy-stubs",
+			-- 	}
+			--
+			-- 	require("plenary.job")
+			-- 		:new({
+			-- 			command = command,
+			-- 			args = args,
+			-- 			cwd = path,
+			-- 		})
+			-- 		:start()
+			-- end)
 			ensure_installed = {
 				"lua_ls",
 				"pylsp",
 				"gopls",
+        "pyright",
 				"markdown-oxide",
 			}
 		end,
@@ -232,6 +233,79 @@ return {
 				capabilities = capabilities,
 			})
 
+
+			-- lspconfig.pylsp.setup({
+			-- 	on_attach = setup_lsp_keybindings,
+			-- 	capabilities = capabilities,
+			-- 	root_dir = util.root_pattern("pyproject.toml", "setup.py", "setup.cfg", "requirements.txt"),
+			-- 	settings = {
+			-- 		pylsp = {
+			-- 			plugins = {
+			-- 				ruff = {
+			-- 					-- formatter + Linter + isort
+			-- 					disabled = true,
+			-- 				},
+			-- 				-- formatter options
+			-- 				black = { enabled = false },
+			-- 				autopep8 = { enabled = false },
+			-- 				yapf = { enabled = false },
+			-- 				-- linter options
+			-- 				pylint = { enabled = false, executable = "pylint" },
+			-- 				pyflakes = { enabled = false },
+			-- 				pycodestyle = {
+			-- 					enabled = true,
+			-- 					maxLineLength = 120,
+			-- 				},
+			-- 				-- type checker
+			-- 				pylsp_mypy = { enabled = true },
+			-- 				mypy = { enabled = false },
+			-- 				-- auto-completion options
+			-- 				jedi_completion = { fuzzy = true },
+			-- 				-- import sorting
+			-- 				pyls_isort = { enabled = false },
+			-- 				rope_completion = {
+			-- 					enabled = true,
+			-- 				},
+			-- 				rope_autoimport = {
+			-- 					enabled = true,
+			-- 				},
+			-- 				-- ... You can configure other plugins here as needed
+			-- 			},
+			-- 		},
+			-- 	},
+			-- })
+
+      lspconfig.pyright.setup({
+        on_attach = function(client, bufnr)
+          -- Example: you can define key mappings here for LSP commands.
+          -- local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+          -- local opts = { noremap = true, silent = true }
+          -- Key mappings
+          -- buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+          -- buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+          -- buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+          -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+
+          -- Example command configurations can also be added here
+        end,
+
+        flags = {
+          -- For performance improvement
+          debounce_text_changes = 150,
+        },
+
+        -- Pyright-specific settings can be added here.
+        settings = {
+          python = {
+            analysis = {
+              typeCheckingMode = "strict",  -- can be "off", "basic", or "strict"
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+            },
+          },
+        },
+      })
+
 			lspconfig.ruff.setup({
 				init_options = {
 					settings = {
@@ -242,46 +316,6 @@ return {
 				},
 			})
 
-			lspconfig.pylsp.setup({
-				on_attach = setup_lsp_keybindings,
-				capabilities = capabilities,
-				root_dir = util.root_pattern("pyproject.toml", "setup.py", "setup.cfg", "requirements.txt"),
-				settings = {
-					pylsp = {
-						plugins = {
-							ruff = {
-								-- formatter + Linter + isort
-								disabled = true,
-							},
-							-- formatter options
-							black = { enabled = false },
-							autopep8 = { enabled = false },
-							yapf = { enabled = false },
-							-- linter options
-							pylint = { enabled = false, executable = "pylint" },
-							pyflakes = { enabled = false },
-							pycodestyle = {
-								enabled = true,
-								maxLineLength = 120,
-							},
-							-- type checker
-							pylsp_mypy = { enabled = true },
-							mypy = { enabled = false },
-							-- auto-completion options
-							jedi_completion = { fuzzy = true },
-							-- import sorting
-							pyls_isort = { enabled = false },
-							rope_completion = {
-								enabled = true,
-							},
-							rope_autoimport = {
-								enabled = true,
-							},
-							-- ... You can configure other plugins here as needed
-						},
-					},
-				},
-			})
 		end,
 	},
 }
