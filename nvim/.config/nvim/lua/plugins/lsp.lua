@@ -316,6 +316,16 @@ return {
 				},
 			})
 
+			lspconfig.ts_ls.setup({
+				on_attach = setup_lsp_keybindings,
+				capabilities = capabilities,
+			})
+
+			lspconfig.html.setup({
+				on_attach = setup_lsp_keybindings,
+				capabilities = capabilities,
+			})
+
 		end,
 	},
 }
