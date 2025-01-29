@@ -60,6 +60,9 @@ vim.g.maplocalleader = "\\"
 
 vim.keymap.set('n', '<leader>pt', ':lua open_todo_file()<CR>', { silent = true })
 vim.keymap.set('n', '<leader>pl', ':lua toggle_checkbox()<CR>', {  silent = true })
+
+-- remap escape to jk in insert mode
+vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })
 --
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
