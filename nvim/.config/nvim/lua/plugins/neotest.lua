@@ -16,7 +16,7 @@ return {
           dap = { justMyCode = false },
           -- Command line arguments for runner
           -- Can also be a function to return dynamic values
-          args = {"--log-level", "DEBUG"},
+          args = {"-s"},
           -- Runner to use. Will use pytest if available by default.
           -- Can be a function to return dynamic value.
           runner = "pytest",
@@ -29,11 +29,11 @@ return {
           -- Returns if a given file path is a test file.
           -- NB: This function is called a lot so don't perform any heavy tasks within it.
           -- is_test_file = function(file_path)
-          --  return string.match(file_path, '_test.py$') ~= nil
+          --    return string.match(file_path, '*test*.py$') ~= nil
           -- end,
           -- !!EXPERIMENTAL!! Enable shelling out to `pytest` to discover test
           -- instances for files containing a parametrize mark (default: false)
-          pytest_discover_instances = true,
+          -- pytest_discover_instances = true,
         })
       }
     })
