@@ -16,6 +16,7 @@ return {
           "go",
           "heex",
           "html",
+          "hurl",
           "javascript",
           "json",
           "json5",
