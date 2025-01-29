@@ -61,6 +61,13 @@ return {
           prompt_title = 'Live Grep in Open Files',
         }
       end, { desc = '[S]earch [/] in Open Files' })
+      local function browse_nvim_config()
+        builtin.find_files({
+          prompt_title = "< NVIM Config >",
+          cwd = vim.fn.expand("~/dotfiles/nvim/.config/nvim"),
+          hidden = true
+        })
+      end
 
       local wk = require("which-key")
       wk.add({
@@ -69,6 +76,7 @@ return {
         { "<leader>fs",       "<cmd>Telescope live_grep<cr>",  desc = "Live Grep" },
         { "<leader>ft",       "<cmd>Telescope help_tags<cr>",  desc = "Help Tags" },
         { "<leader>fr",       "<cmd>Telescope oldfiles<cr>",   desc = "Recent Files" },
+        { "<leader>fc",       "<cmd>lua require('telescope.builtin').find_files({prompt_title = '< NVIM CONFIG >', cwd = vim.fn.expand('~/dotfiles/nvim/.config/nvim'), hidden = true })<cr>",   desc = "Search config files" },
         { "<leader>fg",       "<cmd>lua require('telescope.builtin').live_grep({ cwd = '~/.local/share/nvim/gp/chats' })<cr>",   desc = "Search GPT files" },
         -- { "<leader>fc",  "<cmd>Telescope find_files cwd=vim.fn.stdpath('config')<cr>", desc = "Config files" },
         { "<leader><leader>", "<cmd>Telescope buffers<cr>",    desc = "Buffers" },
