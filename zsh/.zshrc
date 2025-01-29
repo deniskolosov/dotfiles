@@ -35,6 +35,7 @@ bindkey '^[[1;3C' forward-word
 alias ls="eza --icons=always"
 alias cd="z"
 alias lg="lazygit"
+alias ld="lazydocker"
 
 
 function fdvi() {
@@ -59,3 +60,8 @@ function pr() {
    poetry run "$@"
 }
 
+
+export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
+
+export PKG_CONFIG_PATH="/opt/homebrew/opt/mysql-client/lib/pkgconfig"
