@@ -59,6 +59,7 @@ return  {
     local wk = require("which-key")
     wk.add({
       { "<C-t>", "<cmd>Neotree toggle<cr>", desc = "Neotree toggle" },
+      { "<C-l>", "<cmd>Neotree reveal_force_cwd<cr>", desc = "Neotree reveal" },
     })
   end
 }
