@@ -226,6 +226,18 @@ return {
 				cmd = { "gopls" },
 				filetypes = { "go", "gomod", "gowork", "gotmpl" },
 				root_dir = util.root_pattern("go.mod", ".git"),
+        single_file_support = true,
+        settings = {
+          gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            analyses = {
+              unusedparams = true,
+              shadow = true,
+            },
+            staticcheck = true,
+          },
+        },
 			})
 
 			lspconfig.markdown_oxide.setup({
@@ -276,19 +288,8 @@ return {
 			-- })
 
       lspconfig.pyright.setup({
-        on_attach = function(client, bufnr)
-          -- Example: you can define key mappings here for LSP commands.
-          -- local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-          -- local opts = { noremap = true, silent = true }
-          -- Key mappings
-          -- buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-          -- buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-          -- buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-          -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-
-          -- Example command configurations can also be added here
-        end,
-
+				capabilities = capabilities,
+        on_attach = setup_lsp_keybindings,
         flags = {
           -- For performance improvement
           debounce_text_changes = 150,
@@ -298,7 +299,7 @@ return {
         settings = {
           python = {
             analysis = {
-              typeCheckingMode = "strict",  -- can be "off", "basic", or "strict"
+              typeCheckingMode = "basic",  -- can be "off", "basic", or "strict"
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
             },
@@ -324,6 +325,19 @@ return {
 			lspconfig.html.setup({
 				on_attach = setup_lsp_keybindings,
 				capabilities = capabilities,
+				filetypes = { "html", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+			})
+
+			lspconfig.volar.setup({
+				on_attach = setup_lsp_keybindings,
+				capabilities = capabilities,
+				filetypes = { "vue" },
+			})
+
+			lspconfig.cssls.setup({
+				on_attach = setup_lsp_keybindings,
+				capabilities = capabilities,
+				filetypes = { "css" },
 			})
 
 		end,
