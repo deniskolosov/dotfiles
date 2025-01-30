@@ -65,3 +65,9 @@ export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
 
 export PKG_CONFIG_PATH="/opt/homebrew/opt/mysql-client/lib/pkgconfig"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/dkol/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/dkol/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/dkol/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/dkol/google-cloud-sdk/completion.zsh.inc'; fi
