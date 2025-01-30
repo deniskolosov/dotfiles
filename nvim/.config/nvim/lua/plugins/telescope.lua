@@ -77,6 +77,7 @@ return {
         { "<leader>ft",       "<cmd>Telescope help_tags<cr>",  desc = "Help Tags" },
         { "<leader>fr",       "<cmd>Telescope oldfiles<cr>",   desc = "Recent Files" },
         { "<leader>fc",       "<cmd>lua require('telescope.builtin').find_files({prompt_title = '< NVIM CONFIG >', cwd = vim.fn.expand('~/dotfiles/nvim/.config/nvim'), hidden = true })<cr>",   desc = "Search config files" },
+        { "<leader>fd",       "<cmd>lua require('telescope.builtin').live_grep({ cwd = vim.fn.expand('~/dev/todos') })<cr>",   desc = "Search todo files" },
         { "<leader>fg",       "<cmd>lua require('telescope.builtin').live_grep({ cwd = '~/.local/share/nvim/gp/chats' })<cr>",   desc = "Search GPT files" },
         -- { "<leader>fc",  "<cmd>Telescope find_files cwd=vim.fn.stdpath('config')<cr>", desc = "Config files" },
         { "<leader><leader>", "<cmd>Telescope buffers<cr>",    desc = "Buffers" },
