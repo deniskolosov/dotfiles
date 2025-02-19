@@ -11,7 +11,8 @@ export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 PROMPT='%n:~$ %1~ %# '
 eval "$(zoxide init zsh)"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(fzf --zsh)
+export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse --border top'
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
