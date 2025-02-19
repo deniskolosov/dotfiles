@@ -66,8 +66,14 @@ export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
 
 export PKG_CONFIG_PATH="/opt/homebrew/opt/mysql-client/lib/pkgconfig"
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export XDG_CONFIG_HOME="/Users/dkol/.config"
+
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/dkol/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/dkol/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/Users/dkol/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/dkol/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/dkol/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/dkol/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '/Users/dkol/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/dkol/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
