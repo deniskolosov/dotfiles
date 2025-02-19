@@ -1,5 +1,5 @@
-
 # ghostty config
 macos-titlebar-style = hidden
 window-inherit-font-size = true
 font-size = 22 
+font-family = "Comic Code Ligatures"
