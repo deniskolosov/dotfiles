@@ -46,7 +46,8 @@ function fdvi() {
     --bind "enter:execute(nvim {})"
   }
 
-export EDITOR="vi"
+export EDITOR=nvim
+export VISUAL=nvim
 
  
 
