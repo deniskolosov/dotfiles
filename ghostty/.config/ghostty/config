@@ -1,6 +1,7 @@
 # ghostty config
 # macos-titlebar-style = hidden
 window-inherit-font-size = true
-font-size = 14 
+font-size = 18
 font-family = "Comic Code Ligatures"
 keybind = shift+enter=text:\x1b\r
+theme = /Users/dkol/.config/ghostty/themes/themes/catppuccin-mocha.conf
