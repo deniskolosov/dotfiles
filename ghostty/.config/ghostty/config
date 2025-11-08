@@ -1,6 +1,6 @@
 # ghostty config
-macos-titlebar-style = hidden
+# macos-titlebar-style = hidden
 window-inherit-font-size = true
-font-size = 22 
+font-size = 14 
 font-family = "Comic Code Ligatures"
 keybind = shift+enter=text:\x1b\r
