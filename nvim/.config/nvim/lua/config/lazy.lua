@@ -15,6 +15,12 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Add compatibility shim for Neovim 0.11.1 treesitter API changes
+if vim.treesitter.language and not vim.treesitter.language.ft_to_lang then
+  vim.treesitter.language.ft_to_lang = function(ft)
+    return vim.treesitter.language.get_lang(ft)
+  end
+end
 
 -- Setup lazy.nvim
 require("lazy").setup({

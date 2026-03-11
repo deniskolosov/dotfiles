@@ -60,9 +60,13 @@ vim.g.maplocalleader = "\\"
 
 vim.keymap.set('n', '<leader>pt', ':lua open_todo_file()<CR>', { silent = true })
 vim.keymap.set('n', '<leader>pl', ':lua toggle_checkbox()<CR>', {  silent = true })
+vim.keymap.set('n', '<leader>cd', ':lcd %:p:h<CR>', { desc = 'CD to current file directory' })
 
 -- remap escape to jk in insert mode
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })
+
+-- Exit terminal mode with Esc
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 --
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
