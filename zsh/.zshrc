@@ -1,5 +1,6 @@
 export PATH="$PATH:/Users/dkol/.local/bin"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PATH="$PATH:$HOME/go/bin"
 PROMPT='%n:~$ %1~ %# '
 eval "$(zoxide init zsh)"
 
@@ -69,3 +70,4 @@ if [ -f '/Users/dkol/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/dkol/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/dkol/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+alias study="~/interview-prep/start.sh"
