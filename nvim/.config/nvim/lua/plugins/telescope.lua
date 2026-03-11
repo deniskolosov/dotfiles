@@ -2,8 +2,7 @@
 return {
   {
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.8",
-    -- or                              , branch = '0.1.x',
+    branch = "master",
     dependencies = { "nvim-lua/plenary.nvim",
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
         'nvim-telescope/telescope-fzf-native.nvim',
