@@ -49,9 +49,14 @@ return {
 		"neovim/nvim-lspconfig",
 		config = function()
 			-- vim.lsp.set_log_level("debug")
-			local lspconfig = require("lspconfig")
 			local wk = require("which-key")
 			local builtin = require("telescope.builtin")
+
+			-- Fix position_encoding warning by wrapping make_position_params
+			local original_make_position_params = vim.lsp.util.make_position_params
+			vim.lsp.util.make_position_params = function(window, offset_encoding)
+				return original_make_position_params(window, offset_encoding or "utf-16")
+			end
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("lsp_attach_combined", { clear = true }),
@@ -125,7 +130,7 @@ return {
 					{ "<leader>l", group = "LSP" },
 					{
 						"<leader>ld",
-						vim.lsp.buf.definition,
+						function() vim.lsp.buf.definition() end,
 						desc = "Go to Definition",
 					},
 					{
@@ -182,6 +187,11 @@ return {
 						desc = "Format buffer",
 					},
 					{
+						"<leader>F",
+						vim.lsp.buf.format,
+						desc = "Format buffer",
+					},
+					{
 						"<leader>E",
 						vim.diagnostic.open_float,
 						desc = "Show Line Diagnostics",
@@ -195,6 +205,26 @@ return {
 						"<leader>lp",
 						vim.diagnostic.goto_prev,
 						desc = "Go to Previous Diagnostic",
+					},
+					{
+						"<leader>lq",
+						vim.diagnostic.setqflist,
+						desc = "Send Diagnostics to Quickfix",
+					},
+					{
+						"<leader>ll",
+						vim.diagnostic.setloclist,
+						desc = "Send Buffer Diagnostics to Loclist",
+					},
+					{
+						"<leader>li",
+						builtin.lsp_implementations,
+						desc = "Go to Implementation",
+					},
+					{
+						"<leader>lt",
+						builtin.lsp_type_definitions,
+						desc = "Go to Type Definition",
 					},
 
 					-- Fuzzy find all the symbols in your current workspace.
@@ -213,132 +243,144 @@ return {
 			end
 
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			local util = require("lspconfig.util")
+			capabilities.positionEncodings = { "utf-16", "utf-8" }
 
-			lspconfig.lua_ls.setup({
-				on_attach = setup_lsp_keybindings,
-				capabilities = capabilities,
-			})
+			-- Helper function to check if a command exists
+			local function cmd_exists(cmd)
+				return vim.fn.executable(cmd) == 1
+			end
 
-			lspconfig.gopls.setup({
-				on_attach = setup_lsp_keybindings,
-				capabilities = capabilities,
-				cmd = { "gopls" },
-				filetypes = { "go", "gomod", "gowork", "gotmpl" },
-				root_dir = util.root_pattern("go.mod", ".git"),
-        single_file_support = true,
-        settings = {
-          gopls = {
-            completeUnimported = true,
-            usePlaceholders = true,
-            analyses = {
-              unusedparams = true,
-              shadow = true,
-            },
-            staticcheck = true,
-          },
-        },
-			})
+			-- Lua Language Server
+			if cmd_exists("lua-language-server") then
+				vim.lsp.config("lua_ls", {
+					cmd = { "lua-language-server" },
+					filetypes = { "lua" },
+					root_dir = vim.fs.root(0, { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", "selene.toml", "selene.yml", ".git" }),
+					capabilities = capabilities,
+					on_attach = setup_lsp_keybindings,
+				})
+				vim.lsp.enable("lua_ls")
+			end
 
-			lspconfig.markdown_oxide.setup({
-				on_attach = setup_lsp_keybindings,
-				capabilities = capabilities,
-			})
-
-
-			-- lspconfig.pylsp.setup({
-			-- 	on_attach = setup_lsp_keybindings,
-			-- 	capabilities = capabilities,
-			-- 	root_dir = util.root_pattern("pyproject.toml", "setup.py", "setup.cfg", "requirements.txt"),
-			-- 	settings = {
-			-- 		pylsp = {
-			-- 			plugins = {
-			-- 				ruff = {
-			-- 					-- formatter + Linter + isort
-			-- 					disabled = true,
-			-- 				},
-			-- 				-- formatter options
-			-- 				black = { enabled = false },
-			-- 				autopep8 = { enabled = false },
-			-- 				yapf = { enabled = false },
-			-- 				-- linter options
-			-- 				pylint = { enabled = false, executable = "pylint" },
-			-- 				pyflakes = { enabled = false },
-			-- 				pycodestyle = {
-			-- 					enabled = true,
-			-- 					maxLineLength = 120,
-			-- 				},
-			-- 				-- type checker
-			-- 				pylsp_mypy = { enabled = true },
-			-- 				mypy = { enabled = false },
-			-- 				-- auto-completion options
-			-- 				jedi_completion = { fuzzy = true },
-			-- 				-- import sorting
-			-- 				pyls_isort = { enabled = false },
-			-- 				rope_completion = {
-			-- 					enabled = true,
-			-- 				},
-			-- 				rope_autoimport = {
-			-- 					enabled = true,
-			-- 				},
-			-- 				-- ... You can configure other plugins here as needed
-			-- 			},
-			-- 		},
-			-- 	},
-			-- })
-
-      lspconfig.pyright.setup({
-				capabilities = capabilities,
-        on_attach = setup_lsp_keybindings,
-        flags = {
-          -- For performance improvement
-          debounce_text_changes = 150,
-        },
-
-        -- Pyright-specific settings can be added here.
-        settings = {
-          python = {
-            analysis = {
-              typeCheckingMode = "basic",  -- can be "off", "basic", or "strict"
-              autoSearchPaths = true,
-              useLibraryCodeForTypes = true,
-            },
-          },
-        },
-      })
-
-			lspconfig.ruff.setup({
-				init_options = {
+			-- Go Language Server
+			if cmd_exists("gopls") then
+				vim.lsp.config("gopls", {
+					cmd = { "gopls" },
+					filetypes = { "go", "gomod", "gowork", "gotmpl" },
+					root_dir = vim.fs.root(0, { "go.mod", ".git" }),
+					capabilities = capabilities,
+					on_attach = setup_lsp_keybindings,
 					settings = {
-						-- Ruff language server settings go here
-						args = { "--max-line-length=120", "--select=E,W,F,N" }, -- Example: setting max line length and selecting specific error codes
-						exclude = { "*.pyc", "__pycache__" }, -- Exclude specific patterns, like compiled Python files and caches
+						gopls = {
+							completeUnimported = true,
+							usePlaceholders = true,
+							analyses = {
+								unusedparams = true,
+								shadow = true,
+							},
+							staticcheck = true,
+						},
 					},
-				},
-			})
+				})
+				vim.lsp.enable("gopls")
+			end
 
-			lspconfig.ts_ls.setup({
-				on_attach = setup_lsp_keybindings,
-				capabilities = capabilities,
-			})
+			-- Markdown Oxide
+			if cmd_exists("markdown-oxide") then
+				vim.lsp.config("markdown_oxide", {
+					cmd = { "markdown-oxide" },
+					filetypes = { "markdown" },
+					root_dir = vim.fs.root(0, { ".git", ".marksman.toml" }),
+					capabilities = capabilities,
+					on_attach = setup_lsp_keybindings,
+				})
+				vim.lsp.enable("markdown_oxide")
+			end
 
-			lspconfig.html.setup({
-				on_attach = setup_lsp_keybindings,
-				capabilities = capabilities,
-				filetypes = { "html", "javascript", "javascriptreact", "typescript", "typescriptreact" },
-			})
+			-- Pyright
+			if cmd_exists("pyright-langserver") then
+				vim.lsp.config("pyright", {
+					cmd = { "pyright-langserver", "--stdio" },
+					filetypes = { "python" },
+					root_dir = vim.fs.root(0, { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", ".git" }),
+					capabilities = capabilities,
+					on_attach = setup_lsp_keybindings,
+					settings = {
+						python = {
+							analysis = {
+								typeCheckingMode = "basic",
+								autoSearchPaths = true,
+								useLibraryCodeForTypes = true,
+							},
+						},
+					},
+				})
+				vim.lsp.enable("pyright")
+			end
 
-			lspconfig.volar.setup({
-				on_attach = setup_lsp_keybindings,
-				capabilities = capabilities,
-				filetypes = { "vue" },
-			})
+			-- Ruff
+			if cmd_exists("ruff") then
+				vim.lsp.config("ruff", {
+					cmd = { "ruff", "server" },
+					filetypes = { "python" },
+					root_dir = vim.fs.root(0, { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" }),
+					init_options = {
+						settings = {
+							args = { "--max-line-length=120", "--select=E,W,F,N" },
+							exclude = { "*.pyc", "__pycache__" },
+						},
+					},
+				})
+				vim.lsp.enable("ruff")
+			end
 
-			lspconfig.cssls.setup({
-				on_attach = setup_lsp_keybindings,
-				capabilities = capabilities,
-				filetypes = { "css" },
-			})
+			-- TypeScript Language Server
+			if cmd_exists("typescript-language-server") then
+				vim.lsp.config("ts_ls", {
+					cmd = { "typescript-language-server", "--stdio" },
+					filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+					root_dir = vim.fs.root(0, { "package.json", "tsconfig.json", "jsconfig.json", ".git" }),
+					capabilities = capabilities,
+					on_attach = setup_lsp_keybindings,
+				})
+				vim.lsp.enable("ts_ls")
+			end
+
+			-- HTML Language Server
+			if cmd_exists("vscode-html-language-server") then
+				vim.lsp.config("html", {
+					cmd = { "vscode-html-language-server", "--stdio" },
+					filetypes = { "html" },
+					root_dir = vim.fs.root(0, { "package.json", ".git" }),
+					capabilities = capabilities,
+					on_attach = setup_lsp_keybindings,
+				})
+				vim.lsp.enable("html")
+			end
+
+			-- Vue Language Server
+			if cmd_exists("vue-language-server") then
+				vim.lsp.config("vue_ls", {
+					cmd = { "vue-language-server", "--stdio" },
+					filetypes = { "vue" },
+					root_dir = vim.fs.root(0, { "package.json", ".git" }),
+					capabilities = capabilities,
+					on_attach = setup_lsp_keybindings,
+				})
+				vim.lsp.enable("vue_ls")
+			end
+
+			-- CSS Language Server
+			if cmd_exists("vscode-css-language-server") then
+				vim.lsp.config("cssls", {
+					cmd = { "vscode-css-language-server", "--stdio" },
+					filetypes = { "css" },
+					root_dir = vim.fs.root(0, { "package.json", ".git" }),
+					capabilities = capabilities,
+					on_attach = setup_lsp_keybindings,
+				})
+				vim.lsp.enable("cssls")
+			end
 
 		end,
 	},
