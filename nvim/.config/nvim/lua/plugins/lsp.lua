@@ -40,7 +40,7 @@ return {
 				"lua_ls",
 				"pylsp",
 				"gopls",
-        "pyright",
+				"ty",
 				"markdown-oxide",
 			}
 		end,
@@ -297,26 +297,29 @@ return {
 				vim.lsp.enable("markdown_oxide")
 			end
 
-			-- Pyright
-			if cmd_exists("pyright-langserver") then
-				vim.lsp.config("pyright", {
-					cmd = { "pyright-langserver", "--stdio" },
-					filetypes = { "python" },
-					root_dir = vim.fs.root(0, { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", ".git" }),
-					capabilities = capabilities,
-					on_attach = setup_lsp_keybindings,
-					settings = {
-						python = {
-							analysis = {
-								typeCheckingMode = "basic",
-								autoSearchPaths = true,
-								useLibraryCodeForTypes = true,
-							},
-						},
-					},
-				})
-				vim.lsp.enable("pyright")
-			end
+			-- -- Pyright
+			-- if cmd_exists("pyright-langserver") then
+			-- 	vim.lsp.config("pyright", {
+			-- 		cmd = { "pyright-langserver", "--stdio" },
+			-- 		filetypes = { "python" },
+			-- 		root_dir = vim.fs.root(0, { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", ".git" }),
+			-- 		capabilities = capabilities,
+			-- 		on_attach = setup_lsp_keybindings,
+			-- 		settings = {
+			-- 			python = {
+			-- 				analysis = {
+			-- 					typeCheckingMode = "basic",
+			-- 					autoSearchPaths = true,
+			-- 					useLibraryCodeForTypes = true,
+			-- 				},
+			-- 			},
+			-- 		},
+			-- 	})
+			-- 	vim.lsp.enable("pyright")
+			-- end
+
+      -- ty
+      vim.lsp.enable("ty")
 
 			-- Ruff
 			if cmd_exists("ruff") then
