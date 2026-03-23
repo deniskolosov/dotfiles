@@ -5,3 +5,4 @@ font-size = 18
 font-family = "Comic Code Ligatures"
 keybind = shift+enter=text:\x1b\r
 theme = "Catppuccin Mocha"
+shell-integration-features = ssh-terminfo,ssh-env

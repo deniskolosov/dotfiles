@@ -11,7 +11,6 @@ eval "$(zoxide init zsh)"
 alias vi="nvim"
 export PATH="/opt/homebrew/opt/mysql@8.0/bin:$PATH"
 export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
-source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -63,7 +62,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export XDG_CONFIG_HOME="/Users/dkol/.config"
+export XDG_CONFIG_HOME="/Users/Denis.Kolosov/.config"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/dkol/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/dkol/Downloads/google-cloud-sdk/path.zsh.inc'; fi
@@ -71,3 +70,8 @@ if [ -f '/Users/dkol/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/dkol/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/dkol/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 alias study="~/interview-prep/start.sh"
+alias mbook='ssh mbook -t "tmux attach-session -t claude || tmux new-session -s claude"'
+alias mbpush='rsync -avz --exclude ".git" --exclude "node_modules" --exclude "__pycache__" --exclude ".venv" ~/work/ mbook:~/dev/x5/'
+
+. "$HOME/.local/bin/env"
+export COPILOT_X5_API_KEY="e11be3bd-7be6-4539-8f42-0588f63d0003"

@@ -317,9 +317,16 @@ return {
 			-- 	})
 			-- 	vim.lsp.enable("pyright")
 			-- end
+      vim.lsp.config('ty', {
+        settings = {
+          ty = {
+            -- ty language server settings go here
+          }
+        }
+      })
 
-      -- ty
-      vim.lsp.enable("ty")
+      -- Required: Enable the language server
+      vim.lsp.enable('ty')
 
 			-- Ruff
 			if cmd_exists("ruff") then
